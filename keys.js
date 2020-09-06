@@ -1,6 +1,4 @@
 require('dotenv').config();
-require('dotenv').config({ path: './ibm-credentials.env' });
-
 module.exports = {
   twilioNumber: process.env.TWILIO_NUMBER,
   twilioAccountSid: process.env.TWILIO_ACCOUNT_SID,

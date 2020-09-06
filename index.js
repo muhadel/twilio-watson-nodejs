@@ -66,7 +66,6 @@ app.post('/smssent', async (req, res) => {
   console.log('Request', req.body);
   const { Body, From } = req.body;
   const output = await getWatsonResponse(Body);
-  console.log('output', output);
   await sendWhatsappMessage(From, output);
   return res.send('');
 });
