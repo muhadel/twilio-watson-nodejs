@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(helmet());
 
-const sendWhatsappMessage = async (to, message) => {
-  return client.messages
+const sendWhatsappMessage = (to, message) => {
+  client.messages
     .create({ from: `whatsapp:${twilioNumber}`, body: message, to })
     .then((message) => console.log(message.sid))
     .catch((err) => console.log('error', err));
@@ -20,9 +20,9 @@ const sendWhatsappMessage = async (to, message) => {
 
 const getWatsonResponse = async (body) => {
   return new Promise((resolve, reject) => {
+    //ASSISTANT => the first word of env. variables needed for authentication
     const auth = getAuthenticatorFromEnvironment('ASSISTANT');
     const assistant = new AssistantV1({ authenticator: auth, url: watson.assistantUrl, version: '2020-04-01' });
-    // assistant.workspaceId = workspaceId;
     assistant
       .message({ workspaceId: watson.workspaceId, input: { text: body } })
       .then((response) => {
@@ -50,7 +50,7 @@ app.post('/smssent', async (req, res) => {
     console.log('RequestBody', req.body);
     const { Body, From } = req.body;
     const output = await getWatsonResponse(Body);
-    await sendWhatsappMessage(From, output);
+    sendWhatsappMessage(From, output);
     return res.send('OK');
   } catch (error) {
     console.log('error', error);

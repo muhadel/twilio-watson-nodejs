@@ -2,4 +2,3 @@ docs/
 node_modules/
 package-lock.json
 .env
-ibm-credentials.env
