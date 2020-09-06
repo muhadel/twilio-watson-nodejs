@@ -25,9 +25,7 @@ const sendWhatsappMessage = (to, message) => {
       console.log('error', err);
     });
 };
-app.get('/ping', (req, res) => {
-  return res.json({ success: true, host, port, myPhoneNumber });
-});
+
 const getWatsonResponse = async (body) => {
   return new Promise((resolve, reject) => {
     const auth = getAuthenticatorFromEnvironment('ASSISTANT');
@@ -68,6 +66,10 @@ app.post('/smssent', async (req, res) => {
   const output = await getWatsonResponse(Body);
   await sendWhatsappMessage(From, output);
   return res.send('');
+});
+
+app.get('/ping', (req, res) => {
+  return res.json({ success: true, host, port });
 });
 
 app.listen(port, () => {
